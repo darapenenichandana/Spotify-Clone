@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Welcome, {{ user.name }} 🎧</h2>
+
+<div class="song-container">
+    {% for id, song in songs.items() %}
+    <div class="song-card">
+        <img src="{{ url_for('static', filename=song.image) }}">
+        <h4>{{ song.name }}</h4>
+        <form action="{{ url_for('play_song', song_id=id) }}" method="get">
+    <button type="submit">▶</button>
+</form>
+
+        <form action="{{ url_for('like', song_id=id) }}" method="get">
+            <button type="submit" style="background:none;border:none;color:red;font-size:18px;">
+                {% if id in liked_songs %}❤️{% else %}🤍{% endif %}
+            </button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

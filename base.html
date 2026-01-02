@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spotify Clone</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #121212;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background-color: #000;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .left-nav {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .logo {
+            color: #1DB954;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: #b3b3b3;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-link:hover {
+            color: white;
+        }
+
+        .logout {
+            color: #1DB954;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .logout:hover {
+            text-decoration: underline;
+        }
+
+        /* PAGE CONTENT */
+        .content {
+            padding: 20px;
+            margin-bottom: 100px; /* space for bottom player */
+        }
+
+        /* SONGS GRID */
+        .song-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .song-card {
+            background-color: #181818;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .song-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .song-card button {
+            margin-top: 5px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* BOTTOM PLAYER */
+        .bottom-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #181818;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bottom-player img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .bottom-player audio {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="left-nav">
+        <div class="logo">Spotify</div>
+        <a href="/" class="nav-link">Home</a>
+        <a href="/search" class="nav-link">Search</a>
+        <a href="/playlists" class="nav-link">Playlists</a>
+        <a href="/profile" class="nav-link">Profile</a>
+    </div>
+    <a href="/logout" class="logout">Logout</a>
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="content">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- BOTTOM PLAYER -->
+{% if current_song %}
+<div class="bottom-player">
+    <img src="{{ url_for('static', filename=current_song.image) }}" width="50" height="50">
+    <span>{{ current_song.name }}</span>
+    <!-- REMOVE autoplay -->
+    <audio controls>
+        <source src="{{ url_for('static', filename=current_song.file) }}" type="audio/mpeg">
+    </audio>
+</div>
+{% endif %}
+
+</body>
+</html>

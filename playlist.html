@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="playlists-page">
+    <h1>Your Playlists</h1>
+
+    <div class="playlist-container">
+        {% for playlist_name, song_ids in playlists.items() %}
+    <div class="playlist-card">
+        <h3>{{ playlist_name }}</h3>
+        <div class="songs-grid">
+            {% for song_id in song_ids %}
+            <div class="song-card">
+                <img src="{{ url_for('static', filename=songs[song_id].image) }}" alt="{{ songs[song_id].name }}">
+                <h4>{{ songs[song_id].name }}</h4>
+                <form action="{{ url_for('play_song', song_id=song_id) }}" method="get">
+                    <button type="submit">▶ Play</button>
+                </form>
+                <a href="{{ url_for('like', song_id=song_id) }}">
+                    {% if song_id in liked_songs %}❤️{% else %}🤍{% endif %}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}
+
+    </div>
+</div>
+
+<style>
+.playlists-page {
+    padding: 30px;
+}
+
+.playlist-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.playlist-card {
+    background-color: #181818;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.playlist-card h3 {
+    margin-bottom: 15px;
+}
+
+.songs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.song-card {
+    background-color: #121212;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.song-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.song-card button {
+    background-color: #1DB954;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.song-card button:hover {
+    background-color: #1ed760;
+}
+</style>
+{% endblock %}

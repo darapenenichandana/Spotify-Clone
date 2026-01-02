@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="profile-page">
+
+    <!-- PROFILE HEADER -->
+    <div class="profile-header">
+        <img src="{{ url_for('static', filename=user.profile_pic) }}" alt="Profile Pic" class="profile-pic">
+        <div class="profile-details">
+            <h1>{{ user.name }}</h1>
+            <p>{{ user.email }}</p>
+            <div class="follow-info">
+                <span>10 Followers</span> • <span>5 Following</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT PROFILE FORM -->
+    <div class="edit-profile">
+        <h2>Edit Profile</h2>
+        <form method="POST">
+            <input type="text" name="name" placeholder="Name" value="{{ user.name }}" required>
+            <input type="email" name="email" placeholder="Email" value="{{ user.email }}" required>
+            <button type="submit">Update Profile</button>
+        </form>
+    </div>
+
+</div>
+
+<style>
+.profile-page {
+    padding: 30px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background-color: #181818;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-details h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+.profile-details p {
+    margin: 5px 0;
+    color: #b3b3b3;
+}
+
+.follow-info span {
+    color: #b3b3b3;
+    font-size: 14px;
+}
+
+.edit-profile {
+    margin-top: 30px;
+    background-color: #181818;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+}
+
+.edit-profile h2 {
+    margin-bottom: 15px;
+}
+
+.edit-profile input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #121212;
+    border: none;
+    border-radius: 5px;
+    color: white;
+}
+
+.edit-profile button {
+    background-color: #1DB954;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.edit-profile button:hover {
+    background-color: #1ed760;
+}
+</style>
+{% endblock %}

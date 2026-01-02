@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="search-page">
+
+    <!-- SEARCH BAR -->
+    <div class="search-bar">
+        <form method="POST">
+            <input type="text" name="query" placeholder="Search for songs, artists, albums..." required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <!-- SONG RESULTS -->
+    {% if songs %}
+    <div class="section">
+        <h2>Songs</h2>
+        <div class="grid-container">
+            {% for id, song in songs.items() %}
+            <div class="song-card">
+                <img src="{{ url_for('static', filename=song.image) }}" alt="{{ song.name }}">
+                <div class="song-info">
+                    <h4>{{ song.name }}</h4>
+                    <p>{{ artists[song.artist_id].name }}</p>
+                </div>
+                <form action="{{ url_for('play_song', song_id=id) }}" method="get">
+                    <button type="submit" class="play-btn">▶</button>
+                </form>
+                <a href="{{ url_for('like', song_id=id) }}" class="like-btn">
+                    {% if id in liked_songs %}♥{% else %}♡{% endif %}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ARTIST RESULTS -->
+    {% if artists %}
+    <div class="section">
+        <h2>Artists</h2>
+        <div class="grid-container">
+            {% for id, artist in artists.items() %}
+            <div class="artist-card">
+                <h4>{{ artist.name }}</h4>
+                <p>{{ artist.followers }} Followers</p>
+                {% if id in followed_artists %}
+                <a href="{{ url_for('unfollow', artist_id=id) }}" class="follow-btn">Unfollow</a>
+                {% else %}
+                <a href="{{ url_for('follow', artist_id=id) }}" class="follow-btn">Follow</a>
+                {% endif %}
+                <a href="{{ url_for('artist_page', artist_id=id) }}" class="view-btn">View</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ALBUM RESULTS -->
+    {% if albums %}
+    <div class="section">
+        <h2>Albums</h2>
+        <div class="grid-container">
+            {% for id, album in albums.items() %}
+            <div class="album-card">
+                <h4>{{ album.name }}</h4>
+                <p>{{ artists[album.artist_id].name }}</p>
+                <a href="{{ url_for('album_page', album_id=id) }}" class="view-btn">View Album</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<style>
+.search-page {
+    padding: 30px;
+    color: white;
+}
+
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    background-color: #121212;
+    color: white;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    background-color: #1DB954;
+    color: white;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    background-color: #1ed760;
+}
+
+.section {
+    margin-bottom: 40px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.song-card, .artist-card, .album-card {
+    background-color: #181818;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.song-card:hover, .artist-card:hover, .album-card:hover {
+    background-color: #282828;
+    transform: scale(1.05);
+}
+
+.song-card img {
+    width: 100%;
+    height: 160px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.song-info h4, .artist-card h4, .album-card h4 {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.song-info p, .artist-card p, .album-card p {
+    margin: 0;
+    font-size: 14px;
+    color: #b3b3b3;
+}
+
+.play-btn {
+    margin-top: 10px;
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: none;
+    background-color: #1DB954;
+    color: white;
+    cursor: pointer;
+}
+
+.play-btn:hover {
+    background-color: #1ed760;
+}
+
+.like-btn {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 18px;
+    color: #ff4c4c;
+    text-decoration: none;
+}
+
+.follow-btn, .view-btn {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: white;
+    background-color: #1DB954;
+}
+
+.follow-btn:hover, .view-btn:hover {
+    background-color: #1ed760;
+}
+</style>
+{% endblock %}
